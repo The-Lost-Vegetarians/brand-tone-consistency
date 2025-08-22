@@ -1,2 +1,1 @@
-# BDA-TA
-what to doooooo
+# Brand Tone Detection, Consistency and Transliteration
