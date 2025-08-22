@@ -6,19 +6,19 @@ It also involves transliterating English text to Indian languages - Hindi, Tamil
 
 ## Proposed Ideas
 ### 1. Brand Tone Analysis
-    Use the tool to evaluate the overall tone of a brand across various marketing channels (ads, social media, emails).
-    Goal: Understand how a brand communicates through language, and identify the dominant tones.
+Use the tool to evaluate the overall tone of a brand across various marketing channels (ads, social media, emails).
+Goal: Understand how a brand communicates through language, and identify the dominant tones.
 
 ### 2. Multi-label Tone Detection
-    Allow the tool to detect multiple tones in a single piece of text (e.g., "Friendly" and "Motivational" can be detected for an email campaign).
+Allow the tool to detect multiple tones in a single piece of text (e.g., "Friendly" and "Motivational" can be detected for an email campaign).
 
 ### 3. Source-Type Specific Tone Detection
-    Understand how a brand adapts its tone across different platforms (social media, email, website).
-    Goal: Compare how different channels influence tone and engagement.
+Understand how a brand adapts its tone across different platforms (social media, email, website).
+Goal: Compare how different channels influence tone and engagement.
 
 ### 4. Transliteration
-    Enable users to enter Romanized text and convert it to Hindi, Tamil, and Malayalam scripts.
-    Goal: Support multilingual marketing materials and users who are more comfortable with native scripts.
+Enable users to enter Romanized text and convert it to Hindi, Tamil, and Malayalam scripts.
+Goal: Support multilingual marketing materials and users who are more comfortable with native scripts.
 
 ## Project tasks in a nutshell
 ### 1. Data Scraping & Preprocessing
