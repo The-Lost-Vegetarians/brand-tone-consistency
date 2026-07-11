@@ -1,0 +1,100 @@
+version: "3"
+
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    restart: always
+    ports:
+      - 9870:9870
+      - 9000:9000
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=test
+      - HDFS_CONF_dfs_replication=1
+    env_file:
+      - ./hadoop.env
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    restart: always
+    volumes:
+      - hadoop_datanode:/hadoop/dfs/data
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    env_file:
+      - ./hadoop.env
+  
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    container_name: resourcemanager
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
+    env_file:
+      - ./hadoop.env
+
+  nodemanager1:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    container_name: nodemanager
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    env_file:
+      - ./hadoop.env
+  
+  historyserver:
+    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    container_name: historyserver
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    volumes:
+      - hadoop_historyserver:/hadoop/yarn/timeline
+    env_file:
+      - ./hadoop.env
+
+  # --- SPARK SERVICES ---
+  spark-master:
+    image: bde2020/spark-master:3.1.1-hadoop3.2
+    container_name: spark-master
+    restart: always
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - "SPARK_PUBLIC_DNS=localhost"
+      - "INIT_DAEMON_STEP=setup_spark"
+    depends_on:
+      - namenode
+      - datanode
+    #command: /opt/entrypoint.sh /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    volumes:
+      # Mounts the host folder into the container
+      - C:/Users/Ravishankar/Desktop/bdata/models:/opt/whisper.cpp/models
+    # Command to start the container as a Spark Master
+
+  spark-worker:
+    build: ./customSpark
+    container_name: spark-worker
+    restart: always
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+      - "SPARK_WORKER_MEMORY=5g"
+      - "SPARK_WORKER_WEBUI_PORT=8081"
+      - "SPARK_PUBLIC_DNS=localhost"
+    depends_on:
+      - spark-master
+    # Command to start the container as a Spark Worker and connect to the master
+    #command: /opt/entrypoint.sh /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    volumes:
+      # Mounts the host folder into the container
+      - C:/Users/Ravishankar/Desktop/bdata/models:/opt/whisper.cpp/models
+
+  
+volumes:
+  hadoop_namenode:
+  hadoop_datanode:
+  hadoop_historyserver:
