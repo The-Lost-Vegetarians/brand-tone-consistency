@@ -1,0 +1,3 @@
+val videoFile      = "C:/Users/Ravishankar/Desktop/bdata/content/nikeAd.mp4"
+val whisperFolder  = "C:/Users/Ravishankar/Downloads/whisper-bin-x64/Release"
+val modelName      = "ggml-large-v2.bin"
